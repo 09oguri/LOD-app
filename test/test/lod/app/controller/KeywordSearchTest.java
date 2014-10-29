@@ -1,46 +1,37 @@
 package test.lod.app.controller;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import static org.junit.Assert.fail;
 
 import lod.app.controller.KeywordSearch;
 
-import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
 public class KeywordSearchTest {
+    private final String debugConfigFile = "./config/lodac_local_dbpedia_local.properties";
+    private final String webConfigFile = "./config/lodac_web_dbpedia_web.properties";
+    private final String keyword = "葛飾北斎";
+
     private KeywordSearch ks;
 
-    @Before
-    public void setUp() throws FileNotFoundException, IOException {
-        this.ks = new KeywordSearch(
-                "./config/lodac_local_dbpedia_local.properties");
-        // this.ks = new
-        // KeywordSearch("./config/lodac_web_dbpedia_web.properties");
+    @Test
+    public void searchLocalTest() {
+        try {
+            this.ks = new KeywordSearch(debugConfigFile);
+            ks.search(keyword);
+        } catch (Exception e) {
+            fail();
+        }
     }
 
     @Test
     @Ignore
-    public void searchTest() {
-        String expected = "abc";
-        String actual = "abc";
-
-        ks.search("J.K. Rowling");
-
-        assertThat(actual, is(expected));
-    }
-
-    @Test
-    public void searchCreatesTest() {
-        String expected = "abc";
-        String actual = "abc";
-
-        ks.search("葛飾北斎");
-
-        assertThat(actual, is(expected));
+    public void searchWebTest() {
+        try {
+            this.ks = new KeywordSearch(webConfigFile);
+            ks.search(keyword);
+        } catch (Exception e) {
+            fail();
+        }
     }
 }
