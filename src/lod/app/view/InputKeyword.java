@@ -3,6 +3,7 @@ package lod.app.view;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 import com.hp.hpl.jena.query.ResultSet;
 import com.hp.hpl.jena.query.ResultSetFormatter;
@@ -32,5 +33,11 @@ public class InputKeyword implements FrontEnd {
 
     public void output(ResultSet out) {
         ResultSetFormatter.out(System.out, out);
+    }
+
+    public void output(ArrayList<ResultSet> out) {
+        for (ResultSet r : out) {
+            ResultSetFormatter.out(System.out, r);
+        }
     }
 }

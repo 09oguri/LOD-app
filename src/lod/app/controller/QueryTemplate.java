@@ -1,5 +1,11 @@
 package lod.app.controller;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 
@@ -7,53 +13,31 @@ public class QueryTemplate {
     private QueryTemplate() {
     }
 
-    public static Query selectAll() {
-        String queryStr = "select * where {?s ?p ?o .}";
+    public static Query toQuery(String filepath, String... variables) {
+        String textQuery = getTextQuery(filepath);
+        String queryStr = replaceVars(textQuery, variables);
         Query query = QueryFactory.create(queryStr);
-
         return query;
     }
 
-    public static Query selectAll(int limit) {
-        if (limit < 0) {
-            limit = 1;
+    private static String getTextQuery(String filepath) {
+        Path path = Paths.get(filepath);
+        String textQuery;
+        try {
+            byte[] bytes = Files.readAllBytes(path);
+            textQuery = new String(bytes, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+            textQuery = "";
         }
-
-        String queryStr = "select * where {?s ?p ?o .} LIMIT " + limit;
-        Query query = QueryFactory.create(queryStr);
-
-        return query;
+        return textQuery;
     }
 
-    public static Query select(String subject, String predicate, String object) {
-        String queryStr = createSelectQuery(subject, predicate, object);
-        Query query = QueryFactory.create(queryStr);
-        return query;
-    }
-
-    public static Query select(String subject, String predicate, String object,
-            int limit) {
-        String queryStr = createSelectQuery(subject, predicate, object)
-                + " LIMIT " + limit;
-        Query query = QueryFactory.create(queryStr);
-        return query;
-    }
-
-    private static String createSelectQuery(String subject, String predicate,
-            String object) {
-        String s = isVariable(subject) ? subject : toLiteral(subject);
-        String p = isVariable(predicate) ? predicate : toLiteral(predicate);
-        String o = isVariable(object) ? object : toLiteral(object);
-
-        String queryStr = "select * where {" + s + " " + p + " " + o + " .}";
+    private static String replaceVars(String textQuery, String[] vars) {
+        String queryStr = textQuery;
+        for (String var : vars) {
+            queryStr = queryStr.replaceFirst("<<.+>>", var);
+        }
         return queryStr;
-    }
-
-    private static boolean isVariable(String str) {
-        return str.startsWith("?");
-    }
-
-    private static String toLiteral(String str) {
-        return "\"" + str + "\"";
     }
 }

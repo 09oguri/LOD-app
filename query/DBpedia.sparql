@@ -1,0 +1,8 @@
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dbpedia: <http://dbpedia.org/ontology/>
+
+select ?s ?abstract
+where {
+    ?s rdfs:label <<locLabel>> .
+    ?s dbpedia:abstract ?abstract .
+}

@@ -1,0 +1,13 @@
+PREFIX crm: <http://purl.org/NET/cidoc-crm/core#>
+PREFIX dc: <http://purl.org/dc/terms/>
+PREFIX lodac: <http://lod.ac/ns/lodac#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?title ?locLabel
+WHERE {
+    ?s rdfs:label <<keyword>> .
+    ?s lodac:creates ?work .
+    ?work dc:title ?title .
+    ?work crm:P55_has_current_location ?loc .
+    ?loc rdfs:label ?locLabel .
+}

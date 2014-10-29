@@ -8,40 +8,12 @@ import com.hp.hpl.jena.query.ResultSetFactory;
 import com.hp.hpl.jena.sparql.engine.http.QueryEngineHTTP;
 
 public class QueryExecutor {
-    private final String address;
-    private final int port;
-    private final String dataset;
     private final String serviceURI;
-    private String timeout;
+    private final String timeout;
 
-    public QueryExecutor(String address, int port, String dataset) {
-        this.address = address;
-        this.port = port;
-        this.dataset = dataset;
-        this.serviceURI = "";
-        this.timeout = "10000";
-    }
-
-    public QueryExecutor(String serviceURI) {
-        this.address = "";
-        this.port = 0;
-        this.dataset = "";
+    public QueryExecutor(String serviceURI, String timeout) {
         this.serviceURI = serviceURI;
-        this.timeout = "10000";
-    }
-
-    private QueryExecution createQueryExecution(Query query) {
-        QueryExecution qexec = QueryExecutionFactory.sparqlService("http://"
-                + address + ":" + port + "/" + dataset + "/sparql", query);
-        ((QueryEngineHTTP) qexec).addParam("timeout", timeout);
-        return qexec;
-    }
-
-    private QueryExecution createWebQueryExecution(Query query) {
-        QueryExecution qexec = QueryExecutionFactory.sparqlService(serviceURI,
-                query);
-        ((QueryEngineHTTP) qexec).addParam("timeout", timeout);
-        return qexec;
+        this.timeout = timeout;
     }
 
     public ResultSet execQuery(Query query) {
@@ -52,11 +24,10 @@ public class QueryExecutor {
         return rs;
     }
 
-    public ResultSet execWebQuery(Query query) {
-        QueryExecution qexec = createWebQueryExecution(query);
-        ResultSet rs = qexec.execSelect();
-        rs = ResultSetFactory.copyResults(rs);
-        qexec.close();
-        return rs;
+    private QueryExecution createQueryExecution(Query query) {
+        QueryExecution qexec = QueryExecutionFactory.sparqlService(serviceURI,
+                query);
+        ((QueryEngineHTTP) qexec).addParam("timeout", timeout);
+        return qexec;
     }
 }
