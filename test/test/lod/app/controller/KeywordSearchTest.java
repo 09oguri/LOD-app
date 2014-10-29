@@ -17,8 +17,10 @@ public class KeywordSearchTest {
 
     @Before
     public void setUp() throws FileNotFoundException, IOException {
-        this.ks = new KeywordSearch("./config/lodac_local_dbpedia_local.properties");
-//        this.ks = new KeywordSearch("./config/lodac_web_dbpedia_web.properties");
+        this.ks = new KeywordSearch(
+                "./config/lodac_local_dbpedia_local.properties");
+        // this.ks = new
+        // KeywordSearch("./config/lodac_web_dbpedia_web.properties");
     }
 
     @Test
