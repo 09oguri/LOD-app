@@ -66,19 +66,20 @@
 	<target name="compile" depends="init" description="compile the source">
 		<javac
 			srcdir="${srcdir}"
-			encoding="UTF-8"
-			classpathref="libpath"
 			destdir="${outdir}"
-			source="1.7"
+			classpathref="libpath"
+			encoding="UTF-8"
+			source="1.8"
+			includeantruntime="false"
 		/>
 
 		<javac
 			srcdir="${testdir}"
 			destdir="${outdir}"
-			encoding="UTF-8"
 			classpathref="libpath"
-			classpath="${outdir}"
-			source="1.7"
+			encoding="UTF-8"
+			source="1.8"
+			includeantruntime="false"
 		/>
 	</target>
 
