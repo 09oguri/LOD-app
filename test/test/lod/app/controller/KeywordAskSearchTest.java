@@ -16,6 +16,7 @@ public class KeywordAskSearchTest {
             this.ks = new KeywordAskSearch(askConfigFile);
             ks.search(keyword);
         } catch (Exception e) {
+            e.printStackTrace();
             fail();
         }
     }

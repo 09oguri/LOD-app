@@ -20,6 +20,7 @@ public class KeywordSearchTest {
             this.ks = new KeywordSearch(debugConfigFile);
             ks.search(keyword);
         } catch (Exception e) {
+            e.printStackTrace();
             fail();
         }
     }
@@ -31,6 +32,7 @@ public class KeywordSearchTest {
             this.ks = new KeywordSearch(webConfigFile);
             ks.search(keyword);
         } catch (Exception e) {
+            e.printStackTrace();
             fail();
         }
     }
