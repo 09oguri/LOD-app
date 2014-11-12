@@ -24,6 +24,13 @@ public class QueryExecutor {
         return rs;
     }
 
+    public boolean execAsk(Query query) {
+        QueryExecution qexec = createQueryExecution(query);
+        boolean rs = qexec.execAsk();
+        qexec.close();
+        return rs;
+    }
+
     private QueryExecution createQueryExecution(Query query) {
         QueryExecution qexec = QueryExecutionFactory.sparqlService(serviceURI,
                 query);
